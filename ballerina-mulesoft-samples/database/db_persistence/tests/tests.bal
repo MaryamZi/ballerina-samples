@@ -2,6 +2,26 @@ import ballerina/persist;
 import ballerina/test;
 import db_persistence.store;
 
+@test:BeforeSuite
+function addToTable() returns error? {
+    // Can alternatively be added via the script.
+    // Auto increment support is not yet available in the persistence layer,
+    // but is planned for a future release.
+    store:Book[] books = [
+        {id: 1, title: "Good Omens", author: "Terry Pratchett and Neil Gaiman", bookshopName: "A.Z. Fell and Co.", isbn: "9780060853983", price: 50},
+        {id: 2, title: "A Wizard of Earthsea", author: "Ursula K. Le Guin", bookshopName: "A.Z. Fell and Co.", isbn: "9780547773742", price: 20},
+        {id: 3, title: "IT", author: "Stephen King", bookshopName: "A.Z. Fell and Co.", isbn: "9781508297123", price: 20},
+        {id: 4, title: "The Nice and Accurate Prophecies of Agnes Nutter", author: "Agnes Nutter", bookshopName: "A.Z. Fell and Co.", isbn: "000000000000", price: 200},
+        {id: 5, title: "Cujo", author: "Stephen King", bookshopName: "A.Z. Fell and Co.", isbn: "9781501192241", price: 20},
+        {id: 6, title: "Nation", author: "Terry Pratchett", bookshopName: "A.Z. Fell and Co.", isbn: "9780552557795", price: 30},
+        {id: 7, title: "The Ocean at the End of the Lane", author: "Neil Gaiman", bookshopName: "A.Z. Fell and Co.", isbn: "9780062459367", price: 30}
+    ];
+    
+    foreach store:Book book in books {
+        _ = check insert(book);
+    }
+}
+
 @test:Config
 function testSelectAll() returns error? {
     store:Book[] allBooks = check selectAll();
